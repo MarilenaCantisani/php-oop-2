@@ -1,6 +1,6 @@
 <?php
 
-
+//? (Educational test of the use of 'trait')
 trait Discount
 {
     public $discount;
@@ -15,68 +15,62 @@ trait Discount
         return "Lo sconto applicato è del $this->discount %";
     }
 }
+
+//// Creation of the product class
 class Product
+{
+    //// Properties
+    protected $id;
+    protected $category;
+    //// Construct
+    public function __construct($_id, $_category)
+    {
+        $this->id = $_id;
+        $this->category = $_category;
+    }
+    //// Methods that return product class data
+    public function getCategory()
+    {
+        return $this->category;
+    }
+}
+
+//// Creation of a computer class
+class Book extends Product
 {
     //// Traits
     use Discount;
     //// Properties
-    protected $id;
-    protected $name;
-    protected $type;
+    private $name;
+    private $author;
+    private $genre;
     //// Construct
-    public function __construct($_id, $_name, $_type, $_price)
+    public function __construct($_name, $_author, $_genre, $_price, $_id, $_category)
     {
-        $this->id = $_id;
         $this->name = $_name;
-        $this->type = $_type;
+        $this->author = $_author;
+        $this->genre = $_genre;
         $this->price = $_price;
+        parent::__construct($_id, $_category);
+    }
+    //// Methods that return book class data
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+    public function getGenre()
+    {
+        return $this->genre;
     }
 }
 
-$product_1 = new Product(1, "Vaso", "Giardinaggio", 25);
-$product_1->getDiscount($product_1->price);
-var_dump($product_1->getDiscount($product_1->price));
-var_dump($product_1);
-
-class Card
-{
-
-    //// Properties
-    protected $number;
-    protected $name;
-    //// Construct
-    public function __construct($_name, $_number)
-    {
-        $this->name = $_name;
-        $this->number = $_number;
-    }
-    public function getCard()
-    {
-        return "Intestazione" . $this->name . "n." . $this->number;
-    }
-}
-
-class User
-{
-
-    //// Properties
-    protected $name;
-    protected $card;
-
-    //// Construct
-    public function __construct($_name)
-    {
-        $this->name = $_name;
-    }
-    public function addedCard($_card)
-    {
-        $this->card = $_card;
-    }
-}
-
-$user_1 = new User("davide");
-var_dump($user_1);
-$card_1 = new Card("davide", "234566");
-
-$user_1->addedCard($card_1);
-var_dump($user_1);
+//* Creation of a product instance
+$product_1 = new Product(1, "Books");
+//* Creation of a book instance
+$book_1 = new Book("Finché il caffè è caldo", "Toshikazu Kawaguchi", "Fantasy", 15, 2, "Libri");
+//* Check the discount to apply
+$book_1->getDiscount($book_1->price);
